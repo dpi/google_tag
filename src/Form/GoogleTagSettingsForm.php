@@ -56,6 +56,9 @@ class GoogleTagSettingsForm extends ConfigFormBase {
       '#title' => $this->t('Container ID'),
       '#description' => $this->t('The ID assigned by Google Tag Manager (GTM) for this website container. To get a container ID, <a href="https://tagmanager.google.com/">sign up for GTM</a> and create a container for your website.'),
       '#default_value' => $config->get('container_id'),
+      '#config' => [
+        'key' => 'google_tag.settings:container_id',
+      ],
       '#attributes' => ['placeholder' => ['GTM-xxxxxx']],
       '#size' => 12,
       '#maxlength' => 15,
@@ -81,6 +84,9 @@ class GoogleTagSettingsForm extends ConfigFormBase {
         GOOGLE_TAG_INCLUDE_LISTED => $this->t('Only the listed paths'),
       ],
       '#default_value' => $config->get('path_toggle'),
+      '#config' => [
+        'key' => 'google_tag.settings:path_toggle',
+      ],
     ];
 
     $args = [
@@ -94,6 +100,9 @@ class GoogleTagSettingsForm extends ConfigFormBase {
       '#title' => $this->t('Listed paths'),
       '#description' => $this->t('Enter one relative path per line using the "*" character as a wildcard. Example paths are: "%blog" for the blog page, "%blog-wildcard" for each individual blog, and "%front" for the front page.', $args),
       '#default_value' => $config->get('path_list'),
+      '#config' => [
+        'key' => 'google_tag.settings:path_list',
+      ],
       '#rows' => 10,
     ];
 
@@ -113,6 +122,9 @@ class GoogleTagSettingsForm extends ConfigFormBase {
         GOOGLE_TAG_INCLUDE_LISTED => $this->t('Only the selected roles'),
       ],
       '#default_value' => $config->get('role_toggle'),
+      '#config' => [
+        'key' => 'google_tag.settings:role_toggle',
+      ],
     ];
 
     $user_roles = array_map(function($role) {
@@ -123,6 +135,9 @@ class GoogleTagSettingsForm extends ConfigFormBase {
       '#type' => 'checkboxes',
       '#title' => $this->t('Selected roles'),
       '#default_value' => $config->get('role_list'),
+      '#config' => [
+        'key' => 'google_tag.settings:role_list',
+      ],
       '#options' => $user_roles,
     ];
 
@@ -144,6 +159,9 @@ class GoogleTagSettingsForm extends ConfigFormBase {
         GOOGLE_TAG_INCLUDE_LISTED => $this->t('Only the listed statuses'),
       ],
       '#default_value' => $config->get('status_toggle'),
+      '#config' => [
+        'key' => 'google_tag.settings:status_toggle',
+      ],
     ];
 
     $form['status']['status_list'] = [
@@ -151,6 +169,9 @@ class GoogleTagSettingsForm extends ConfigFormBase {
       '#title' => $this->t('Listed statuses'),
       '#description' => $description,
       '#default_value' => $config->get('status_list'),
+      '#config' => [
+        'key' => 'google_tag.settings:status_list',
+      ],
       '#rows' => 5,
     ];
 
@@ -166,6 +187,9 @@ class GoogleTagSettingsForm extends ConfigFormBase {
       '#title' => $this->t('Compact the JavaScript snippet'),
       '#description' => $this->t('If checked, then the JavaScript snippet will be compacted to remove unnecessary whitespace. This is <strong>recommended on production sites</strong>. Leave unchecked to output a snippet that can be examined using a JavaScript debugger in the browser.'),
       '#default_value' => $config->get('compact_snippet'),
+      '#config' => [
+        'key' => 'google_tag.settings:compact_snippet',
+      ],
     ];
 
     $form['advanced']['include_file'] = [
@@ -173,6 +197,9 @@ class GoogleTagSettingsForm extends ConfigFormBase {
       '#title' => $this->t('Include the snippet as a file'),
       '#description' => $this->t('If checked, then each JavaScript snippet will be included as a file. This is <strong>recommended</strong>. Leave unchecked to inline each snippet into the page. This only applies to data layer and script snippets.'),
       '#default_value' => $config->get('include_file'),
+      '#config' => [
+        'key' => 'google_tag.settings:include_file',
+      ],
     ];
 
     $form['advanced']['rebuild_snippets'] = [
@@ -180,6 +207,9 @@ class GoogleTagSettingsForm extends ConfigFormBase {
       '#title' => $this->t('Recreate snippets on cache rebuild'),
       '#description' => $this->t('If checked, then the JavaScript snippet files will be created during a cache rebuild. This is <strong>recommended on production sites</strong>.'),
       '#default_value' => $config->get('rebuild_snippets'),
+      '#config' => [
+        'key' => 'google_tag.settings:rebuild_snippets',
+      ],
     ];
 
     $form['advanced']['debug_output'] = [
@@ -187,6 +217,9 @@ class GoogleTagSettingsForm extends ConfigFormBase {
       '#title' => $this->t('Show debug output'),
       '#description' => $this->t('If checked, then the result of each snippet insertion condition will be shown in the message area. Enable <strong>only for development</strong> purposes.'),
       '#default_value' => $config->get('debug_output'),
+      '#config' => [
+        'key' => 'google_tag.settings:debug_output',
+      ],
     ];
 
     $form['advanced']['data_layer'] = [
@@ -194,6 +227,9 @@ class GoogleTagSettingsForm extends ConfigFormBase {
       '#title' => $this->t('Data layer'),
       '#description' => $this->t('The name of the data layer. Default value is "dataLayer". In most cases, use the default.'),
       '#default_value' => $config->get('data_layer'),
+      '#config' => [
+        'key' => 'google_tag.settings:data_layer',
+      ],
       '#attributes' => ['placeholder' => ['dataLayer']],
       '#required' => TRUE,
     ];
@@ -203,6 +239,9 @@ class GoogleTagSettingsForm extends ConfigFormBase {
       '#title' => $this->t('Add classes to the data layer'),
       '#description' => $this->t('If checked, then the listed classes will be added to the data layer.'),
       '#default_value' => $config->get('include_classes'),
+      '#config' => [
+        'key' => 'google_tag.settings:include_classes',
+      ],
     ];
 
     $description = $this->t('The types of tags, triggers, and variables <strong>allowed</strong> on a page. Enter one class per line. For more information, refer to the <a href="https://developers.google.com/tag-manager/devguide#security">developer documentation</a>.');
@@ -212,6 +251,9 @@ class GoogleTagSettingsForm extends ConfigFormBase {
       '#title' => $this->t('White-listed classes'),
       '#description' => $description,
       '#default_value' => $config->get('whitelist_classes'),
+      '#config' => [
+        'key' => 'google_tag.settings:whitelist_classes',
+      ],
       '#rows' => 5,
       '#states' => $this->statesArray('include_classes'),
     ];
@@ -221,6 +263,9 @@ class GoogleTagSettingsForm extends ConfigFormBase {
       '#title' => $this->t('Black-listed classes'),
       '#description' => $this->t('The types of tags, triggers, and variables <strong>forbidden</strong> on a page. Enter one class per line.'),
       '#default_value' => $config->get('blacklist_classes'),
+      '#config' => [
+        'key' => 'google_tag.settings:blacklist_classes',
+      ],
       '#rows' => 5,
       '#states' => $this->statesArray('include_classes'),
     ];
@@ -230,6 +275,9 @@ class GoogleTagSettingsForm extends ConfigFormBase {
       '#title' => $this->t('Include an environment'),
       '#description' => $this->t('If checked, then the applicable snippets will include the environment items below. Enable <strong>only for development</strong> purposes.'),
       '#default_value' => $config->get('include_environment'),
+      '#config' => [
+        'key' => 'google_tag.settings:include_environment',
+      ],
     ];
 
     $description = $this->t('The environment ID to use with this website container. To get an environment ID, <a href="https://tagmanager.google.com/#/admin">select Environments</a>, create an environment, then click the "Get Snippet" action. The environment ID and token will be in the snippet.');
@@ -239,6 +287,9 @@ class GoogleTagSettingsForm extends ConfigFormBase {
       '#title' => $this->t('Environment ID'),
       '#description' => $description,
       '#default_value' => $config->get('environment_id'),
+      '#config' => [
+        'key' => 'google_tag.settings:environment_id',
+      ],
       '#attributes' => ['placeholder' => ['env-x']],
       '#size' => 10,
       '#maxlength' => 7,
@@ -250,6 +301,9 @@ class GoogleTagSettingsForm extends ConfigFormBase {
       '#title' => $this->t('Environment token'),
       '#description' => $this->t('The authentication token for this environment.'),
       '#default_value' => $config->get('environment_token'),
+      '#config' => [
+        'key' => 'google_tag.settings:environment_token',
+      ],
       '#attributes' => ['placeholder' => ['xxxxxxxxxxxxxxxxxxxxxx']],
       '#size' => 20,
       '#maxlength' => 25,
