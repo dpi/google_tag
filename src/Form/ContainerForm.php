@@ -71,6 +71,7 @@ class ContainerForm extends EntityForm {
     $form = parent::form($form, $form_state);
     $container = $this->container = $this->entity;
     $this->prefix = '';
+    $this->configName = $container->getConfigDependencyName();
 
     // Store the contexts for other objects to use during form building.
     $form_state->setTemporaryValue('gathered_contexts', $this->contextRepository->getAvailableContexts());
@@ -85,6 +86,9 @@ class ContainerForm extends EntityForm {
       '#title' => 'Label',
       '#default_value' => $container->label(),
       '#required' => TRUE,
+      '#config' => [
+        'key' => sprintf('%s:%s%s', $this->configName, $this->prefix, 'label'),
+      ],
     ];
     $form['id'] = [
       '#type' => 'machine_name',
@@ -156,12 +160,18 @@ class ContainerForm extends EntityForm {
       '#size' => 12,
       '#maxlength' => 15,
       '#required' => TRUE,
+      '#config' => [
+        'key' => sprintf('%s:%s%s', $this->configName, $this->prefix, 'container_id'),
+      ],
     ];
 
     $fieldset['weight'] = [
       '#type' => 'weight',
       '#title' => 'Weight',
       '#default_value' => $container->get('weight'),
+      '#config' => [
+        'key' => sprintf('%s:%s%s', $this->configName, $this->prefix, 'weight'),
+      ],
     ];
 
     return $fieldset;

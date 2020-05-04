@@ -24,6 +24,13 @@ trait ContainerTrait {
   protected $prefix;
 
   /**
+   * Name of configuration. Or null if it is not saved.
+   *
+   * @var string|null
+   */
+  protected $configName;
+
+  /**
    * Fieldset builder for the container settings form.
    */
   public function advancedFieldset(FormStateInterface &$form_state) {
@@ -43,6 +50,9 @@ trait ContainerTrait {
       '#default_value' => $container->get("{$this->prefix}data_layer"),
       '#attributes' => ['placeholder' => ['dataLayer']],
       '#required' => TRUE,
+      '#config' => [
+        'key' => sprintf('%s:%s%s', $this->configName, $this->prefix, 'data_layer'),
+      ],
     ];
 
     $fieldset['include_classes'] = [
@@ -50,6 +60,9 @@ trait ContainerTrait {
       '#title' => $this->t('Add classes to the data layer'),
       '#description' => $this->t('If checked, then the listed classes will be added to the data layer.'),
       '#default_value' => $container->get("{$this->prefix}include_classes"),
+      '#config' => [
+        'key' => sprintf('%s:%s%s', $this->configName, $this->prefix, 'include_classes'),
+      ],
     ];
 
     $description = $this->t('The types of tags, triggers, and variables <strong>allowed</strong> on a page. Enter one class per line. For more information, refer to the <a href="https://developers.google.com/tag-manager/devguide#security">developer documentation</a>.');
@@ -61,6 +74,9 @@ trait ContainerTrait {
       '#default_value' => $container->get("{$this->prefix}whitelist_classes"),
       '#rows' => 5,
       '#states' => $this->statesArray('include_classes'),
+      '#config' => [
+        'key' => sprintf('%s:%s%s', $this->configName, $this->prefix, 'whitelist_classes'),
+      ],
     ];
 
     $fieldset['blacklist_classes'] = [
@@ -70,6 +86,9 @@ trait ContainerTrait {
       '#default_value' => $container->get("{$this->prefix}blacklist_classes"),
       '#rows' => 5,
       '#states' => $this->statesArray('include_classes'),
+      '#config' => [
+        'key' => sprintf('%s:%s%s', $this->configName, $this->prefix, 'blacklist_classes'),
+      ],
     ];
 
     $fieldset['include_environment'] = [
@@ -77,6 +96,9 @@ trait ContainerTrait {
       '#title' => $this->t('Include an environment'),
       '#description' => $this->t('If checked, then the applicable snippets will include the environment items below. Enable <strong>only for development</strong> purposes.'),
       '#default_value' => $container->get("{$this->prefix}include_environment"),
+      '#config' => [
+        'key' => sprintf('%s:%s%s', $this->configName, $this->prefix, 'include_environment'),
+      ],
     ];
 
     $description = $this->t('The environment ID to use with this website container. To get an environment ID, <a href="https://tagmanager.google.com/#/admin">select Environments</a>, create an environment, then click the "Get Snippet" action. The environment ID and token will be in the snippet.');
@@ -90,6 +112,9 @@ trait ContainerTrait {
       '#size' => 10,
       '#maxlength' => 7,
       '#states' => $this->statesArray('include_environment'),
+      '#config' => [
+        'key' => sprintf('%s:%s%s', $this->configName, $this->prefix, 'environment_id'),
+      ],
     ];
 
     $fieldset['environment_token'] = [
@@ -101,6 +126,9 @@ trait ContainerTrait {
       '#size' => 20,
       '#maxlength' => 25,
       '#states' => $this->statesArray('include_environment'),
+      '#config' => [
+        'key' => sprintf('%s:%s%s', $this->configName, $this->prefix, 'environment_token'),
+      ],
     ];
 
     return $fieldset;

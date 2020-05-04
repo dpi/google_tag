@@ -33,6 +33,7 @@ class SettingsForm extends ConfigFormBase {
   public function buildForm(array $form, FormStateInterface $form_state) {
     $this->container = $this->config('google_tag.settings');
     $this->prefix = '_default_container.';
+    $this->configName = $this->container->getName();
 
     // Build form elements.
     $description = $this->t('<br />After configuring the module settings and default properties for a new container, <strong>add a container</strong> on the <a href=":url">container management page</a>.', [':url' => Url::fromRoute('entity.google_tag_container.collection')->toString()]);
@@ -91,6 +92,9 @@ class SettingsForm extends ConfigFormBase {
       '#default_value' => $config->get('uri'),
       '#attributes' => ['placeholder' => ['public:/']],
       '#required' => TRUE,
+      '#config' => [
+        'key' => sprintf('%s:%s', $this->configName, 'uri'),
+      ],
     ];
 
     $fieldset['compact_snippet'] = [
@@ -98,6 +102,9 @@ class SettingsForm extends ConfigFormBase {
       '#title' => $this->t('Compact the JavaScript snippet'),
       '#description' => $this->t('If checked, then the JavaScript snippet will be compacted to remove unnecessary whitespace. This is <strong>recommended on production sites</strong>. Leave unchecked to output a snippet that can be examined using a JavaScript debugger in the browser.'),
       '#default_value' => $config->get('compact_snippet'),
+      '#config' => [
+        'key' => sprintf('%s:%s', $this->configName, 'compact_snippet'),
+      ],
     ];
 
     $fieldset['include_file'] = [
@@ -105,6 +112,9 @@ class SettingsForm extends ConfigFormBase {
       '#title' => $this->t('Include the snippet as a file'),
       '#description' => $this->t('If checked, then each JavaScript snippet will be included as a file. This is <strong>recommended</strong>. Leave unchecked to inline each snippet into the page. This only applies to data layer and script snippets.'),
       '#default_value' => $config->get('include_file'),
+      '#config' => [
+        'key' => sprintf('%s:%s', $this->configName, 'include_file'),
+      ],
     ];
 
     $fieldset['rebuild_snippets'] = [
@@ -112,6 +122,9 @@ class SettingsForm extends ConfigFormBase {
       '#title' => $this->t('Recreate snippets on cache rebuild'),
       '#description' => $this->t('If checked, then the JavaScript snippet files will be created during a cache rebuild. This is <strong>recommended on production sites</strong>. If not checked, any missing snippet files will be created during a page response.'),
       '#default_value' => $config->get('rebuild_snippets'),
+      '#config' => [
+        'key' => sprintf('%s:%s', $this->configName, 'rebuild_snippets'),
+      ],
     ];
 
     $fieldset['flush_snippets'] = [
@@ -119,6 +132,9 @@ class SettingsForm extends ConfigFormBase {
       '#title' => $this->t('Flush snippet directory on cache rebuild'),
       '#description' => $this->t('If checked, then the snippet directory will be deleted during a cache rebuild. If not checked, then manual intervention may be required to tidy up the snippet directory (e.g. remove snippet files for a deleted container).'),
       '#default_value' => $config->get('flush_snippets'),
+      '#config' => [
+        'key' => sprintf('%s:%s', $this->configName, 'flush_snippets'),
+      ],
     ];
 
     $fieldset['debug_output'] = [
@@ -126,6 +142,9 @@ class SettingsForm extends ConfigFormBase {
       '#title' => $this->t('Show debug output'),
       '#description' => $this->t('If checked, then the result of each snippet insertion condition will be shown in the message area. Enable <strong>only for development</strong> purposes.'),
       '#default_value' => $config->get('debug_output'),
+      '#config' => [
+        'key' => sprintf('%s:%s', $this->configName, 'debug_output'),
+      ],
     ];
 
     return $fieldset;
